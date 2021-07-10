@@ -1,0 +1,5 @@
+1. chưa hoàn thiện route về subject, schedule và 
+2. error validation chưa hoàn thiện 
+3. làm sao để set _id của các model về dạng objectId
+4. controller/subject.js line 50: chưa hiểu sao không bị lỗi json
+5. ktra xem lean có tác dụng gì
