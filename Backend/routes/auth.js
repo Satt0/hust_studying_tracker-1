@@ -1,7 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
 const router = express.Router();
-//hellugit
+
 const User = require("../models/user");
 
 const authController = require('../controllers/auth');

@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
 
-const scheduleRoutes = require('./routes/subject');
+const scheduleRoutes = require('./routes/class');
 const authRoutes = require('./routes/auth');
 
 app.use(bodyParser.json());

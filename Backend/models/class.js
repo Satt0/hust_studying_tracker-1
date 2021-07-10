@@ -2,99 +2,99 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const classSchema = new Schema({
-  Kỳ: {
+  semester: {
     type: String,
     required: true,
   },
-  Khoa_Viện: {
+  faculty: {
     type: String,
     required: true,
   },
-  Mã_lớp: {
+  classCode: {
     type: String,
     required: false,
   },
-  Mã_lớp_kèm: {
+  addtionalClassCode: {
     type: String,
     required: false,
   },
-  Mã_HP: {
+  subjectCode: {
     type: String,
     required: true,
   },
-  Tên_HP: {
+  subject: {
     type: String,
     required: true,
   },
-  Tên_HP_Tiếng_Anh: {
+  subjectInEng: {
     type: String,
     required: false,
   },
-  Khối_lượng: {
+  amount: {
     type: String,
     required: true,
   },
-  Ghi_chú: {
+  note: {
     type: String,
     required: false,
   },
-  Buổi_số: {
+  firstClass: {
     type: String,
     required: false,
   },
-  Thứ: {
+  date: {
     type: String,
     required: true,
   },
-  Thời_gian: {
+  time: {
     type: String,
     required: true,
   },
-  BĐ: {
+  start: {
     type: String,
     required: true,
   },
-  KT: {
+  end: {
     type: String,
     required: false,
   },
-  Kíp: {
+  session: {
     type: String,
     required: false,
   },
-  Tuần: {
+  week: {
     type: String,
     required: true,
   },
-  Phòng: {
+  room: {
     type: String,
     required: true,
   },
-  Cần_TN: {
+  labRequired: {
     type: String,
     required: false,
   },
-  SLĐK: {
+  registeredNo: {
     type: String,
     required: false,
   },
-  SL_Max: {
+  maxRegistered: {
     type: String,
     required: false,
   },
-  Trạng_thái: {
+  status: {
     type: String,
     required: false,
   },
-  Loại_lớp: {
+  type: {
     type: String,
     required: false,
   },
-  Đợt_mở: {
+  opened: {
     type: String,
     required: false,
   },
-  Mã_QL: {
+  irrelavent: {
     type: String,
     required: false,
   },
