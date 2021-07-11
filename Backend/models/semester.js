@@ -22,7 +22,7 @@ const semesterSchema = new Schema(
       required: true,
     },
   },
-  { collection: "Semester" }
+  { collection: "Semester", timestamps: true }
 );
 
 module.exports = mongoose.model("Semester", semesterSchema);

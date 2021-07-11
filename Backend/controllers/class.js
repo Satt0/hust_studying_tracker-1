@@ -1,28 +1,32 @@
 const Subject = require("../models/subject");
 const User = require("../models/user");
 const Class = require("../models/class");
+const Semester = require("../models/semester");
 
 const mongoose = require("mongoose");
+const { ResultWithContext } = require("express-validator/src/chain");
 
 exports.addSubject = (req, res, next) => {
-  const { name, _id, description } = req.body;
+  const { name, description, subjectCode } = req.body;
   const subject = new Subject({
     name: name,
-    _id: _id,
+    subjectCode: subjectCode,
     description: description,
   });
   subject
     .save()
     .then((result) => {
-      console.log("subject added");
       res.status(201).json({
         message: "subject-created",
         subject: result,
       });
     })
-    .catch();
+    .catch((err) =>{
+      if(!err.status)
+      err.statusCode =500,
+      next(err);
+    });
 };
-
 
 exports.findClass = (req, res, next) => {
   const { subjectCode } = req.params;
@@ -44,14 +48,40 @@ exports.findClass = (req, res, next) => {
       return classList;
     })
     .catch((err) => {
-      const error = new Error(err);
-      err.statusCode = 401;
-      throw error;
+      if(!err.statusCode)
+      err.statusCode = 404;
+      next(err);
     });
 };
 
-exports.saveClasses = ( req, res, next) => {
-  const {userId} = req;
-  const
+exports.saveClasses = (req, res, next) => {
+  const { userId } = req;
+  const { classList } = req.body;
+  const classListId = classList.map((item) => mongoose.Types.ObjectId(item._id));
+  const semester = new Semester({
+    semester: "20201",
+    subject: classListId,
+    user: userId,
+  });
+  semester
+    .save()
+    .then((result) => {
+      return User.findById(userId)
+    })
+    .then(user => {
+      user.schedule.push(semester);
+      user.save();
+    })
+    .then(result => {
+      console.log(result);
+    })
+    .catch((err) => {
+      if(!err.statusCode == 500)
+      err.statusCode =500;
+      next(err); 
+    });
+};
 
+exports.updateClasses = (req, res, next) => {
+  
 }

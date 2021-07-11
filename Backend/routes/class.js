@@ -8,4 +8,6 @@ router.post('/save-classes',isAuth, classController.saveClasses)
 
 router.get('/find-class/:subjectCode', isAuth, classController.findClass);
 
+router.post('/add-subject', classController.addSubject);
+
 module.exports = router;
