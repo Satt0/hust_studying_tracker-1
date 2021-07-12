@@ -9,11 +9,9 @@ const semesterSchema = new Schema(
     },
     subject: [
       {
-        subjectId: {
           type: Schema.Types.ObjectId,
           ref: "Subject",
           required: false,
-        },
       },
     ],
     user: {
