@@ -62,17 +62,17 @@ export default function ShowSelectedCourse() {
             })
             setSchedule(newSchedule)            
     },[courseList])
-    React.useEffect(()=>{
-        if(mutex.isLock){
-            if(mutex.queue.length>0){
-               const course= getClassInformation({...mutex.queue[0]})
-               dispatch({type:Type.insertSelectedCourse,payload:{main:course.thisCourse,sub:course.subCourse}})
-            }
+    // React.useEffect(()=>{
+    //     if(mutex.isLock){
+    //         if(mutex.queue.length>0){
+    //            const course= getClassInformation({...mutex.queue[0]})
+    //            dispatch({type:Type.insertSelectedCourse,payload:{main:course.thisCourse,sub:course.subCourse}})
+    //         }
 
 
-            dispatch({type:Type.startAddCourse})
-        }
-    },[mutex,dispatch])
+    //         dispatch({type:Type.startAddCourse})
+    //     }
+    // },[mutex,dispatch])
     return (
         <div className={styles.container}>
            
