@@ -1,4 +1,3 @@
-
 const User = require("../models/user");
 const Class = require("../models/class");
 const Semester = require("../models/semester");
@@ -10,20 +9,60 @@ exports.findClass = (req, res, next) => {
   Class.find({ subjectCode: subjectCode })
     .lean()
     .then((classes) => {
+      if (!classes) {
+        const error = new Error("No class found");
+        error.statusCode = 404;
+        throw error;
+      }
       const classList = {
-        LT_BT: [],
-        LT: [],
-        BT: [],
-        TN: [],
+        class: [],
+        experiment: [],
       };
-      // categorize class type
-      for (let item of classes) {
-        item._id = item._id.toString();
-        if (item.type === "LT+BT") classList.LT_BT.push(item);
-        else classList[item.type].push(item);
+      // categorize class
+
+      let i = 0;
+      while (i < classes.length) {
+        if (classes[i].type === "LT+BT") {
+          let j = i;
+          while (
+            j < classes.length - 1 &&
+            classes[j + 1].classCode === classes[j].classCode
+          )
+            j++;
+          const deletedClasses = classes.slice(i, j + 1);
+          classList.class.push(deletedClasses);
+          i = j + 1;
+        } else if (classes[i].type === "TN") {
+          let j = i;
+          while (
+            j < classes.length - 1 &&
+            classes[j + 1].classCode === classes[j].classCode
+          )
+            j++;
+          const deletedClasses = classes.slice(i, j + 1);
+          classList.experiment.push(deletedClasses);
+          i = j + 1;
+        } else if (classes[i].type === "BT") {
+          const additionalClassNumber = classes.findIndex((item) => {
+            return (
+              item.classCode === classes[i].addtionalClassCode &&
+              item.type === "LT"
+            );
+          });
+          console.log(classes[i].additionalClassCode);
+          let j = i;
+          while (
+            j < classes.length - 1 &&
+            classes[j + 1].addtionalClassCode === classes[j].addtionalClassCode
+          )
+            j++;
+          const deletedClasses = classes.slice(i, j + 1);
+          deletedClasses.push(classes[additionalClassNumber]);
+          classList.class.push(deletedClasses);
+          i = j + 1;
+        } else i++;
       }
       res.status(200).json({ data: classList });
-      return classList;
     })
     .catch((err) => {
       if (!err.statusCode) err.statusCode = 500;
@@ -60,6 +99,7 @@ exports.saveSchedule = (req, res, next) => {
       });
     })
     .catch((err) => {
+      err.message = "Error saving schedule";
       if (!err.statusCode == 500) err.statusCode = 500;
       next(err);
     });
@@ -74,14 +114,12 @@ exports.getSchedule = (req, res, next) => {
         err.statusCode = 404;
         throw error;
       }
-      console.log(result);
       return Promise.all(
         result.subject.map(async (item) => {
-          const subject1 = await Class.findById(item, function (err, doc) {
+          const subject = await Class.findById(item, function (err, doc) {
             return doc;
           });
-          console.log(subject1);
-          return subject1;
+          return subject;
         })
       );
     })
@@ -116,6 +154,7 @@ exports.updateSchedule = (req, res, next) => {
       });
     })
     .catch((err) => {
+      err.message = "Error updating schedule"
       if (!err.statusCode) err.statusCode = 500;
       next(err);
     });

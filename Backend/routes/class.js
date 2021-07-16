@@ -8,11 +8,8 @@ router.post('/save-schedule',isAuth, classController.saveSchedule);
 
 router.get('/get-schedule', isAuth, classController.getSchedule);
 
-router.post('/update-schedule', isAuth, classController.updateSchedule);
+router.put('/update-schedule', isAuth, classController.updateSchedule);
 
 router.get('/find-class/:subjectCode', isAuth, classController.findClass);
-
-//router.post('/add-subject', classController.addSubject);
-
 
 module.exports = router;

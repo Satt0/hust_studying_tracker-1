@@ -28,6 +28,7 @@ exports.signup = (req, res, next) => {
     })
     .catch((err) => {
       if (!err.statusCode) {
+        er.message = 'Error signing up';
         err.statusCode = 500;
       }
       next(err);
@@ -39,7 +40,7 @@ exports.login = (req, res, next) => {
   let loadedUser;
   User.findOne({ email: email })
     .then((user) => {
-      // Cant find the user
+      // Cannot find the user
       if (!user) {
         const error = new Error('No user found!');
         error.statusCode = 401;
@@ -64,8 +65,8 @@ exports.login = (req, res, next) => {
           expiresIn: '3h'
         });
       res.status(200).json({
+        message: "Login successfully",
         token: token,
-        userId: loadedUser._id.toString()
       })
 
     })
