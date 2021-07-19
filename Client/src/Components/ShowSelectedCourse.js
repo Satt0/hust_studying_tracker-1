@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSelector,useDispatch } from 'react-redux'
-import {getClassInformation} from 'Helpers/API/SampleAPI'
 import Type from 'Store/TYPE'
 import styles from 'Assets/Scss/Component/ShowSelectedCourse.module.scss'
 const tableColumn=[
@@ -23,7 +22,6 @@ const tableRow=[
 ]
 export default function ShowSelectedCourse() {
 
-    const mutex=useSelector(state=>state.selected.mutex)
     const [shedule,setSchedule]=React.useState([])
     const heightRef=React.useRef(null)
     const dispatch=useDispatch()
@@ -62,17 +60,7 @@ export default function ShowSelectedCourse() {
             })
             setSchedule(newSchedule)            
     },[courseList])
-    // React.useEffect(()=>{
-    //     if(mutex.isLock){
-    //         if(mutex.queue.length>0){
-    //            const course= getClassInformation({...mutex.queue[0]})
-    //            dispatch({type:Type.insertSelectedCourse,payload:{main:course.thisCourse,sub:course.subCourse}})
-    //         }
-
-
-    //         dispatch({type:Type.startAddCourse})
-    //     }
-    // },[mutex,dispatch])
+   
     return (
         <div className={styles.container}>
            
@@ -80,17 +68,17 @@ export default function ShowSelectedCourse() {
                 <div className={styles.rowHead}>
                     <div style={{opacity:0}}>time</div>
                     <div className={styles.rowHeadBody} ref={heightRef}>
-                    {tableRow.map(e=><li className={styles.rowHeadItem}>{e.name}</li>)}
+                    {tableRow.map((e,i)=><li key={'row-h-'+i} className={styles.rowHeadItem}>{e.name}</li>)}
 
                     </div>
                 </div>
-                {tableColumn.map((e)=><div className={styles.col}>
+                {tableColumn.map((e,i)=><div key={"col-"+i} className={styles.col}>
                     <div className={styles.rowColTitle}>
                         {e.name} 
                     </div>
                    <div className={styles.rowBody}>
                    <li className={styles.course}>
-                           {shedule.filter(c=>c.wd===e.id).map(course=><li style={{top:calTop(course.time,height),height:calHeight(course.time,height)}} className={styles.courseItem}>
+                           {shedule.filter(c=>c.wd===e.id).map((course,i)=><li key={"el-"+i} style={{top:calTop(course.time,height),height:calHeight(course.time,height)}} className={styles.courseItem}>
                                 <p>{course.name}  <strong onClick={()=>{onDelete(course.deleteProps)}} style={{color:'red',position:"absolute",right:4,cursor:'pointer'}}>X</strong></p>
                                 <p>{course.type}</p>
                                 <p>{course.time}</p>
@@ -98,7 +86,7 @@ export default function ShowSelectedCourse() {
 
                            </li>)}
                        </li>
-                   {tableRow.map(e=><li className={styles.rowBodyItem}>
+                   {tableRow.map((e,i)=><li key={'row-'+i} className={styles.rowBodyItem}>
                     
 
                    </li>)}

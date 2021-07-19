@@ -11,11 +11,8 @@ const pickedDefault = {
   courses: [],
 };
 const selectedDefault = {
-  courses: [],
-  mutex: {
-    isLock: false,
-    queue: [],
-  },
+  courses: []
+  
 };
 
 const user = (state = userDefault, action) => {
@@ -35,19 +32,10 @@ const cart = (state = pickedDefault, action) => {
   return state;
 };
 const selected = (state = selectedDefault, action) => {
-  if (action.type === Type.prepareAddCourse) {
-    const newQueue = [...state.mutex.queue, action.payload];
-    return {
-      ...state,
-      mutex: { ...state.mutex, isLock: true, queue: newQueue },
-    };
-  } else if (action.type === Type.startAddCourse) {
-    const newQueue = [...state.mutex.queue].slice(1);
-    return {
-      ...state,
-      mutex: { ...state.mutex, isLock: false, queue: newQueue },
-    };
-  } else if (action.type === Type.insertSelectedCourse) {
+
+   if (action.type === Type.insertSelectedCourse) {
+    // filter conflict
+
     const newState = [...state.courses, action.payload];
     return { ...state, courses: newState };
   }else if(action.type===Type.removeCourse){

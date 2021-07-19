@@ -96,76 +96,21 @@ function Row(props) {
 
 const AddCourseButton=({classId,courseId,time})=>{
   const selected=useSelector(state=>state.selected.courses)
-  const [message,setMessage]=useState(null)
+  const [message,setMessage]=useState("Add")
    const [lock,setLock]=useState(true) 
   const dispatch=useDispatch()
 
-  useEffect(()=>{
-      const find=selected.findIndex(e=>e.main.class_id===classId)
-     
-      if(find>=0){
-        setLock(true)
-        setMessage("Added")
 
-      }else{
-        const isConflict=checkConfict(time,selected)
-        if(isConflict){
-          setLock(true)
-          setMessage("Conflict")
-          return
-        }
-        setMessage("Add")
-        setLock(false)
-      }
-  },[selected,classId,time])
   const handleClick=()=>{
-    dispatch({type:Type.prepareAddCourse,payload:{classId,courseId}})
+    //dispatch({type:Type.insertSelectedCourse,payload:{classId,courseId}})
+    
   }
   return <TableCell align="right">
   <Button onClick={handleClick} disabled={lock} color="primary" variant="outlined">{message}</Button>
   </TableCell>
 }
 
-function compare(thisTime,listTime){
-  if(thisTime.wd!==listTime.wd){
-    return true
-  }
-  const [start,end]=thisTime.time.split('-')
-  const [compareStart,compareEnd]=listTime.time.split('-')
-  if( parseInt(start) < parseInt(compareStart) && parseInt(end) < parseInt (compareEnd)) {
-    return true
-  }
-  if(parseInt(start)>parseInt(compareEnd) ){
-    return true
-  }
-  return false
 
-}
-function checkConfict(time,list){
-  for(let i=0;i<list.length;i++){
-
-    const item=list[i]
-      const itemTime={
-        wd:item.main.week_day,
-        time:item.main.time_last
-      }
-      const isFree=compare(time,itemTime)
-      if(!isFree){
-        return true;
-      }
-      if(item.sub){
-        const subTime={
-          wd:item.sub.week_day,
-          time:item.sub.time_last
-        }
-        const isSubFree=compare(time,subTime)
-        if(!isSubFree){
-          return true
-        }
-      }
-  }
-  return false
-}
 
 
 
